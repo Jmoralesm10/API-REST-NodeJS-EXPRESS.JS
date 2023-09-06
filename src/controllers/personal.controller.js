@@ -33,7 +33,32 @@ res.send({id: rows.insertId,
 };
 
 //Actualizar empleado
-export const putpersonal = (req, res) => {
+export const putpersonal = async (req, res) => {
+    const {id} = req.params
+    const {Nombres, Apellidos, Direccion, Telefono, Puesto, Salario} = req.body
+    const [result] = await pool.query('UPDATE personal SET Nombres = ?, Apellidos = ?, Direccion = ?, Telefono = ?, Puesto = ?, Salario = ? WHERE id_personal = ?', [Nombres, Apellidos, Direccion, Telefono, Puesto, Salario,id])
+
+    if (result.affectedRows === 0) return res.status(404).json({
+        message: 'Registro no actualizado'
+    })
+
+    const [rows] = await pool.query('SELECT * FROM personal where id_personal = ?', [req.params.id])
+    res.send(rows[0])
+
+}
+
+//Despedir empleado
+export const patchpersonal = async (req, res) => {
+    const {id} = req.params
+    const {Fecha_despido} = req.body
+    const [result] = await pool.query('UPDATE personal SET Fecha_despido = ? WHERE id_personal = ?', [Fecha_despido, id])
+
+    if (result.affectedRows === 0) return res.status(404).json({
+        message: 'Registro no actualizado'
+    })
+
+    const [rows] = await pool.query('SELECT * FROM personal where id_personal = ?', [req.params.id])
+    res.send(rows[0])
 
 }
 
