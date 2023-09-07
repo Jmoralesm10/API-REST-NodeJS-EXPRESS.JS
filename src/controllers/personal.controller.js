@@ -89,7 +89,6 @@ export const deletetpersonal = async (req, res) => {
         if (result.affectedRows <= 0) return res.status(404).json({
             message: 'El empleado no existe'
         })
-
         res.sendStatus(204)
     } catch (error) {
         return res.status(500).json({ Message: 'Algo salio mal!' })
